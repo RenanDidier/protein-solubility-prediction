@@ -1,4 +1,4 @@
-# Application of Machine Learning in the Prediction of Protein Solubility
+# Application of Machine Learning for Protein Solubility Prediction
 
 ## Table of Contents  
 [Files Overview](#Files-Overview)  
