@@ -6,6 +6,9 @@ import numpy as np
 from sklearn.model_selection import KFold
 from sklearn.metrics import r2_score
 
+# Spicy Libraries
+import scipy.stats as stats
+
 
 def kfold(n_splits=10, shuffle=True, random_state=100):
     return KFold(n_splits = n_splits, shuffle = shuffle, random_state = random_state)
@@ -102,3 +105,55 @@ def five_two(reg1, reg2, X, y, metric='default'):
   print("Score difference mean + stdev : %.6f + %.6f" 
         % (np.mean(diff_scores), np.std(diff_scores)))
   print("t_value for the current test is %.6f" % t_bar)
+
+
+def chunks(lst, chunk_size):
+  return [lst[i:i + chunk_size] for i in range(0, len(lst), chunk_size)]
+
+
+def compare_models(reg1, reg2, X, y, metric='default'):
+
+  # Initialize the score difference for the 1st fold of the 1st iteration 
+  p_1_1 = 0.0
+
+  # Initialize a place holder for the variance estimate
+  s_sqr = 0.0
+
+  # Initialize scores list for both classifiers
+  scores_1 = []
+  scores_2 = []
+  diff_scores = []
+
+  chunk_size = 8
+  data_x = chunks(X, chunk_size)[:-1]
+  #data_x = data_x[:-2] + [data_x[-2]+data_x[-1]]
+  data_y = chunks(y, chunk_size)[:-1]
+  #data_y = data_y[:-2] + [data_y[-2]+data_y[-1]]
+
+
+  # Iterate through chunks
+  for i_s in range(len(data_x)):
+
+    # Initialize score differences
+    p_i = np.zeros(2)
+
+    val_x = data_x[i_s]
+    val_y = data_y[i_s]
+
+    # Compute scores
+    preds_1 = reg1.predict(val_x)
+    score_1 = r2_score(val_y, preds_1)
+    
+    preds_2 = reg2.predict(val_x)
+    score_2 = r2_score(val_y, preds_2)
+
+
+    # keep score history for mean and stdev calculation
+    scores_1.append(score_1)
+    scores_2.append(score_2)
+    diff_scores.append(score_1 - score_2)
+    print("Iteration %2d score difference = %.6f" % (i_s + 1, score_1 - score_2))
+
+  print(f"mean_score_1 {np.mean(scores_1)}, std {np.std(scores_1)}")
+  print(f"mean_score_2 {np.mean(scores_2)}, std {np.std(scores_2)}")
+  print(stats.ttest_rel(scores_1, scores_2))
