@@ -1,6 +1,8 @@
 # General libraries
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # Scikit Learn libraries
 from sklearn.model_selection import KFold
@@ -108,7 +110,7 @@ def five_two(reg1, reg2, X, y, metric='default'):
 
 
 
-def compare_models(reg1, reg2, X, y, metric='default'):
+def compare_models(reg1, reg2, X, y, random_state_list, metric='default'):
 
   # Initialize scores list for both classifiers
   scores_1 = []
@@ -116,14 +118,12 @@ def compare_models(reg1, reg2, X, y, metric='default'):
   diff_scores = []
 
   X['solubility'] = y['solubility']
-  
-  random_state_list = [
-    4, 10, 33, 42, 22312,
-    400, 77, 809, 9, 111
-  ]
-  
+
+  #print(random_state_list)
+
+
   # Iterate through samples
-  for i in range(len(random_state_list)):
+  for i in range(0, len(random_state_list)):
     
     sample = X.sample(n=len(X), replace=True, random_state=random_state_list[i])
     #sample.to_csv('~/Desktop/sample{}'.format(i))
@@ -156,7 +156,7 @@ def compare_models(reg1, reg2, X, y, metric='default'):
     scores_1.append(score_1)
     scores_2.append(score_2)
     diff_scores.append(score_1 - score_2)
-    print("Iteration %2d score difference = %.6f" % (i + 1, score_1 - score_2))
+    #print("Iteration %2d score difference = %.6f" % (i + 1, score_1 - score_2))  
 
   print(f"mean_score_1 {np.mean(scores_1)}, std {np.std(scores_1)}")
   print(f"mean_score_2 {np.mean(scores_2)}, std {np.std(scores_2)}")
@@ -164,3 +164,35 @@ def compare_models(reg1, reg2, X, y, metric='default'):
   a, b = stats.ttest_rel(scores_1, scores_2)
   if b <= 0.05:
     print("P value menor ou igual a 0.05")
+  
+  return scores_1, scores_2
+
+
+
+
+def plot_score_dist(reg1_scores, reg2_scores):
+  plt.clf()
+  sns.set(color_codes=True)
+  sns.set(rc={'figure.figsize': (8,6)})
+  plt.title('Reg1 vs Reg2 scores', fontsize='25')
+  plt.xlabel('Score Values', fontsize='20')
+  plt.ylabel('Score Frequency', fontsize='20')
+  sns.distplot(reg1_scores, label='Reg1 scores')
+  sns.distplot(reg2_scores, label='Reg2 scores')
+
+  plt.legend()
+  plt.show()
+
+
+def compare_confidence_intervals(reg1_scores, reg2_scores, lower=2.5, upper=97.5):
+  reg1_lower = np.percentile(a=reg1_scores, q=lower)
+  reg1_upper = np.percentile(a=reg1_scores, q=upper)
+
+  reg2_lower = np.percentile(a=reg2_scores, q=lower)
+  reg2_upper = np.percentile(a=reg2_scores, q=upper)
+
+  print(reg1_lower)
+  print(reg1_upper)
+
+  print(reg2_lower)
+  print(reg2_upper)
