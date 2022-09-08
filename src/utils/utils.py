@@ -170,15 +170,15 @@ def compare_models(reg1, reg2, X, y, random_state_list, metric='default'):
 
 
 
-def plot_score_dist(reg1_scores, reg2_scores):
+def plot_score_dist(reg1_scores, reg2_scores, reg1, reg2):
   plt.clf()
   sns.set(color_codes=True)
   sns.set(rc={'figure.figsize': (8,6)})
-  plt.title('Reg1 vs Reg2 scores', fontsize='25')
+  plt.title('{} vs {} scores'.format(reg1, reg2), fontsize='25')
   plt.xlabel('Score Values', fontsize='20')
   plt.ylabel('Score Frequency', fontsize='20')
-  sns.distplot(reg1_scores, label='Reg1 scores')
-  sns.distplot(reg2_scores, label='Reg2 scores')
+  sns.distplot(reg1_scores, label='{} scores'.format(reg1))
+  sns.distplot(reg2_scores, label='{} scores'.format(reg2))
 
   plt.legend()
   plt.show()
