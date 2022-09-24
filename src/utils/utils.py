@@ -196,3 +196,14 @@ def compare_confidence_intervals(reg1_scores, reg2_scores, lower=2.5, upper=97.5
 
   print(reg2_lower)
   print(reg2_upper)
+
+
+def read_datasets(x_train_file, x_test_file, y_train_file, y_test_file):
+  folder_path = "../data/"
+
+  x_train = pd.read_csv(folder_path + x_train_file)
+  x_test = pd.read_csv(folder_path + x_test_file)
+  y_train = pd.read_csv(folder_path + y_train_file)
+  y_test = pd.read_csv(folder_path + y_test_file)
+
+  return x_train, x_test, y_train, y_test
