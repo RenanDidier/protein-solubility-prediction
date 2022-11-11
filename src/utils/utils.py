@@ -184,6 +184,21 @@ def plot_score_dist(reg1_scores, reg2_scores, reg1, reg2):
   plt.show()
 
 
+def plot_pred_expected_results(y_test, y_pred):
+  fig = plt.figure(figsize=[10,8])
+  ax = plt.axes()
+  plt.xlabel('Expected')
+  plt.ylabel('Predicted')
+
+  plt.scatter(y_test, y_pred, color='salmon')
+  plt.plot(list(range(0, len(y_test))), list(range(0, len(y_test))), color='lightsteelblue')
+
+  plt.title(label="Solubility: Predicted vs Expected", fontsize=15)
+
+  plt.axis('square')
+  plt.show()
+
+
 def compare_confidence_intervals(reg1_scores, reg2_scores, lower=2.5, upper=97.5):
   reg1_lower = np.percentile(a=reg1_scores, q=lower)
   reg1_upper = np.percentile(a=reg1_scores, q=upper)
