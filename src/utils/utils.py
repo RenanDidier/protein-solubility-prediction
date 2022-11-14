@@ -191,11 +191,13 @@ def plot_pred_expected_results(y_test, y_pred):
   plt.ylabel('Predicted')
 
   plt.scatter(y_test, y_pred, color='salmon')
-  plt.plot(list(range(0, len(y_test))), list(range(0, len(y_test))), color='lightsteelblue')
+  plt.plot(list(range(0, 120)), list(range(0, 120)), color='lightsteelblue')
 
   plt.title(label="Solubility: Predicted vs Expected", fontsize=15)
-
-  plt.axis('square')
+  
+  plt.xlim([0, 120])
+  plt.ylim([0, 120])
+  
   plt.show()
 
 
