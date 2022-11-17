@@ -224,3 +224,50 @@ def read_datasets(x_train_file, x_test_file, y_train_file, y_test_file):
   y_test = pd.read_csv(folder_path + y_test_file)
 
   return x_train, x_test, y_train, y_test
+
+
+def plot_all_compares(score1, score2, score3, score4, score5, score6):
+  fig, axes = plt.subplots(2, 3, figsize=(18, 10), sharey=True)
+  fig.suptitle('Comparação do R2 entre modelos durante Bootstrap')
+
+  fig.text(0.5, 0.04, 'Score Values', ha='center')
+  fig.text(0.04, 0.5, 'Score Frequency', va='center', rotation='vertical')
+
+
+  sns.distplot(score1[0], label='{} scores'.format(score1[2]), ax=axes[0,0])
+  sns.distplot(score1[1], label='{} scores'.format(score1[3]), ax=axes[0,0])
+  axes[0,0].set_title('{} vs {} scores'.format(score1[2], score1[3]))
+  # axes[0,0].legend([score1[2], score1[3]])
+  axes[0,0].legend()
+
+  sns.distplot(score2[0], label='{} scores'.format(score2[2]), ax=axes[0,1])
+  sns.distplot(score2[1], label='{} scores'.format(score2[3]), ax=axes[0,1])
+  axes[0,1].set_title('{} vs {} scores'.format(score2[2], score2[3]))
+  # axes[0,1].legend([score2[2], score2[3]])
+  axes[0,1].legend()
+
+  sns.distplot(score3[0], label='{} scores'.format(score3[2]), ax=axes[0,2])
+  sns.distplot(score3[1], label='{} scores'.format(score3[3]), ax=axes[0,2])
+  axes[0,2].set_title('{} vs {} scores'.format(score3[2], score3[3]))
+  # axes[0,2].legend([score3[2], score3[3]])
+  axes[0,2].legend()
+
+  sns.distplot(score4[0], label='{} scores'.format(score4[2]), ax=axes[1,0])
+  sns.distplot(score4[1], label='{} scores'.format(score4[3]), ax=axes[1,0])
+  axes[1,0].set_title('{} vs {} scores'.format(score4[2], score4[3]))
+  # axes[1,0].legend([score4[2], score4[3]])
+  axes[1,0].legend()
+
+  sns.distplot(score5[0], label='{} scores'.format(score5[2]), ax=axes[1,1])
+  sns.distplot(score5[1], label='{} scores'.format(score5[3]), ax=axes[1,1])
+  axes[1,1].set_title('{} vs {} scores'.format(score5[2], score5[3]))
+  # axes[1,1].legend([score5[2], score5[3]])
+  axes[1,1].legend()
+
+  sns.distplot(score6[0], label='{} scores'.format(score6[2]), ax=axes[1,2])
+  sns.distplot(score6[1], label='{} scores'.format(score6[3]), ax=axes[1,2])
+  axes[1,2].set_title('{} vs {} scores'.format(score6[2], score6[3]))
+  # axes[1,2].legend([score6[2], score6[3]])
+  axes[1,2].legend()
+
+  plt.show()
