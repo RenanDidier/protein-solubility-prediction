@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 # Scikit Learn libraries
 from sklearn.model_selection import KFold
 from sklearn.metrics import r2_score
+from sklearn.feature_selection import r_regression
 
 # Spicy Libraries
 import scipy.stats as stats
@@ -185,10 +186,16 @@ def plot_score_dist(reg1_scores, reg2_scores, reg1, reg2):
 
 
 def plot_pred_expected_results(y_test, y_pred):
+  r = r_regression(y_pred.reshape(-1, 1), y_test['solubility'].to_numpy().reshape(-1, 1))
+
   fig = plt.figure(figsize=[10,8])
   ax = plt.axes()
-  plt.xlabel('Expected')
-  plt.ylabel('Predicted')
+  plt.xlabel('Expected', fontsize=16)
+  plt.ylabel('Predicted', fontsize=16)
+
+  # Set tick font size
+  for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+    label.set_fontsize(16)
 
   plt.scatter(y_test, y_pred, color='salmon')
   plt.plot(list(range(0, 120)), list(range(0, 120)), color='lightsteelblue')
@@ -197,7 +204,8 @@ def plot_pred_expected_results(y_test, y_pred):
   
   plt.xlim([0, 120])
   plt.ylim([0, 120])
-  
+
+  plt.figtext(.15, .85, 'r = {:.2f}'.format(r[0]), size=15)
   plt.show()
 
 
